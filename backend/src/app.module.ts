@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import {ServeStaticModule} from "@nestjs/serve-static";
-import {ConfigModule} from "@nestjs/config";
-import * as path from "node:path";
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { ConfigModule } from '@nestjs/config';
+import * as path from 'node:path';
 
-import {configProvider} from "./app.config.provider";
+import { configProvider } from './app.config.provider';
 import { FilmsController } from './films/films.controller';
 import { FilmsService } from './films/films.service';
 import { FilmsRepository } from './repository/films.repository';
@@ -14,16 +14,16 @@ import { Film, FilmSchema } from './films/films.schema';
 
 @Module({
   imports: [
-	ConfigModule.forRoot({
-          isGlobal: true,
-          cache: true
-      }),
-      MongooseModule.forRoot(process.env.DATABASE_URL),
-      MongooseModule.forFeature([{ name: Film.name, schema: FilmSchema}]),
-      ServeStaticModule.forRoot({
-        rootPath: path.join(__dirname, '..', 'public'), // Директория для статического контента
-        renderPath: '/content/afisha/', // Путь для обслуживания статических файлов
-      }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      cache: true,
+    }),
+    MongooseModule.forRoot(process.env.DATABASE_URL),
+    MongooseModule.forFeature([{ name: Film.name, schema: FilmSchema }]),
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '..', 'public'), // Директория для статического контента
+      renderPath: '/content/afisha/', // Путь для обслуживания статических файлов
+    }),
   ],
   controllers: [FilmsController, OrderController],
   providers: [configProvider, FilmsService, OrderService, FilmsRepository],

@@ -1,41 +1,36 @@
 //TODO описать DTO для запросов к /films
-import {
-  IsNumber,
-  IsString,
-  IsArray,
-  IsDate,
-} from 'class-validator';
+import { IsNumber, IsString, IsArray, IsDate } from 'class-validator';
 
 export class CreateScheduleDto {
-    @IsDate()
-    readonly daytime: Date;
-    @IsNumber()
-    readonly hall: number;
-    @IsNumber()
-    readonly rows: number;
-    @IsNumber()
-    readonly seats: number;
-    @IsNumber()
-    readonly price: number;
-  }
-  
-  export class CreateFilmDto {
-    @IsString()
-    readonly title: string;
-    @IsString()
-    readonly director: string;
-    @IsNumber()
-    readonly rating: number;
-    @IsArray()
-    readonly tags: string[];
-    @IsString()
-    readonly image: string;
-    @IsString()
-    readonly cover: string;
-    @IsString()
-    readonly about: string;
-    @IsString()
-    readonly description: string;
-    @IsArray()
-    readonly schedule: CreateScheduleDto[];
-  }
+  @IsDate()
+  daytime: Date;
+  @IsNumber()
+  hall: number;
+  @IsNumber()
+  rows: number;
+  @IsNumber()
+  seats: number;
+  @IsNumber()
+  price: number;
+}
+
+export class CreateFilmDto {
+  @IsString()
+  title: string;
+  @IsString()
+  director: string;
+  @IsNumber()
+  rating: number;
+  @IsArray()
+  tags: string[];
+  @IsString()
+  image: string;
+  @IsString()
+  cover: string;
+  @IsString()
+  about: string;
+  @IsString()
+  description: string;
+  @IsArray()
+  schedule: CreateScheduleDto[];
+}

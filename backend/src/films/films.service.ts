@@ -4,17 +4,17 @@ import { CreateFilmDto } from './dto/create-film.dto';
 
 @Injectable()
 export class FilmsService {
-    constructor(private readonly filmsRepository: FilmsRepository) {}
+  constructor(private readonly filmsRepository: FilmsRepository) {}
 
-    async create(createFilmDto: CreateFilmDto) {
-        return this.filmsRepository.create(createFilmDto);
-    }
+  async create(createFilmDto: CreateFilmDto) {
+    return this.filmsRepository.create(createFilmDto);
+  }
 
-    async findAll() {
-        return this.filmsRepository.findAll();
-    }
+  async findAll() {
+    return this.filmsRepository.findAll();
+  }
 
-    async findOne(id: string) {
-        return this.filmsRepository.findOne(id);
-    }
+  async findOne(id: string) {
+    return this.filmsRepository.findOne(id);
+  }
 }

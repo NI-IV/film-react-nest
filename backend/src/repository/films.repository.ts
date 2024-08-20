@@ -13,7 +13,7 @@ export class FilmsRepository {
     return createdFilm.save();
   }
 
-  async findAll(): Promise<{ items: Film[], total: number }> {
+  async findAll(): Promise<{ items: Film[]; total: number }> {
     const [items, total] = await Promise.all([
       this.filmModel.find().exec(),
       this.filmModel.countDocuments().exec(),
@@ -22,7 +22,9 @@ export class FilmsRepository {
     return { items, total };
   }
 
-  async findOne(id: string): Promise<{ items: Schedule[] | null, total: number }> {
+  async findOne(
+    id: string,
+  ): Promise<{ items: Schedule[] | null; total: number }> {
     const film = await this.filmModel.findOne({ id }).exec();
     const total = film ? film.schedule.length : 0;
 
