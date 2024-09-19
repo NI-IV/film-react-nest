@@ -19,7 +19,14 @@ import { FilmsRepository } from './films/films.repository';
       cache: true,
     }),
     TypeOrmModule.forRoot({
-      type: process.env.DATABASE_DRIVER as 'mysql' | 'mariadb' | 'postgres' | 'cockroachdb' | 'sqlite' | 'mssql' | 'oracle',
+      type: process.env.DATABASE_DRIVER as
+        | 'mysql'
+        | 'mariadb'
+        | 'postgres'
+        | 'cockroachdb'
+        | 'sqlite'
+        | 'mssql'
+        | 'oracle',
       host: process.env.DATABASE_HOST,
       port: +process.env.DATABASE_PORT,
       username: process.env.DATABASE_USERNAME,

@@ -5,10 +5,11 @@ import { Film } from './entities/film.entity';
 import { CreateFilmDto } from '../films/dto/create-film.dto';
 import { Schedule } from './entities/schedule.entity';
 
-
 @Injectable()
 export class FilmsRepository {
-  constructor(@InjectRepository(Film) private filmRepository: Repository<Film>) {}
+  constructor(
+    @InjectRepository(Film) private filmRepository: Repository<Film>,
+  ) {}
 
   async create(createFilmDto: CreateFilmDto): Promise<Film> {
     const createdFilm = this.filmRepository.create(createFilmDto);
@@ -24,7 +25,9 @@ export class FilmsRepository {
     return { items, total };
   }
 
-  async findOne(id: string): Promise<{ items: Schedule[] | null; total: number }> {
+  async findOne(
+    id: string,
+  ): Promise<{ items: Schedule[] | null; total: number }> {
     const film = await this.filmRepository.findOne({
       where: { id },
       relations: ['schedule'],
