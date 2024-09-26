@@ -3,15 +3,15 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Film, FilmDocument } from '../films/films.schema';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Film } from '../films/entities/film.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 
 @Injectable()
 export class OrderService {
   constructor(
-    @InjectModel(Film.name) private readonly filmModel: Model<FilmDocument>,
+    @InjectRepository(Film) private readonly filmRepository: Repository<Film>,
   ) {}
 
   async createOrder(orderDto: CreateOrderDto): Promise<string> {
@@ -21,7 +21,10 @@ export class OrderService {
       const { film, session, row, seat } = ticket;
 
       // Находим фильм по ID
-      const filmDoc = await this.filmModel.findOne({ id: film }).exec();
+      const filmDoc = await this.filmRepository.findOne({
+        where: { id: film },
+        relations: ['schedule'],
+      });
       if (!filmDoc) {
         throw new NotFoundException(`Film with ID ${film} not found.`);
       }
@@ -34,17 +37,24 @@ export class OrderService {
         );
       }
 
-      // Проверяем, занято ли указанное место
+      // Формируем код места
       const seatCode = `${row}:${seat}`;
-      if (schedule.taken.includes(seatCode)) {
+
+      // Проверяем, занято ли указанное место
+      const takenSeats = schedule.taken.split(','); // Разделяем строку на массив
+      if (takenSeats.includes(seatCode)) {
         throw new BadRequestException(`Seat ${seatCode} is already booked.`);
       }
 
       // Если место свободно, бронируем его
-      schedule.taken.push(seatCode);
+      if (schedule.taken) {
+        schedule.taken += `,${seatCode}`; // Добавляем новое место
+      } else {
+        schedule.taken = seatCode; // Инициализируем строку
+      }
 
-      // Сохраняем
-      await filmDoc.save();
+      // Сохраняем изменения
+      await this.filmRepository.save(filmDoc);
     }
 
     return `Successfully booked ${tickets.length} tickets.`;
