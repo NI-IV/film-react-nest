@@ -1,6 +1,6 @@
 # FILM!
 
-## Link: http://http://films.nomorepartiesco.ru
+## Link: http://films.nomorepartiesco.ru
 
 ## Установка
 
